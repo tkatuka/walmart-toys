@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="utf-8">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+
+<link rel="stylesheet" href="main.css">
+
+<title>creative project 2</title>
+<script>
+$(document).ready(function(){
+  
+	console.log("before function");
+       $("#button").click(function(data) {
+                var idurl = "http://api.walmartlabs.com/v1/taxonomy?apiKey=rpmexzrgsckcerqff95udkc6";
+		$.ajax({
+			url: idurl,
+			datatype: "json",
+			success: function(e) {
+				console.log(idurl);
+				console.log(e);
+			}
+		
+		});		
+
+                var topic = $("#category").val();
+		var myurl = "https://api.walmartlabs.com/v1/search?apiKey=rpmexzrgsckcerqff95udkc6&query=" + topic + "&categoryId=4171&sort=price&ord=asc";
+		console.log(myurl);
+                data.preventDefault();
+                $.ajax({
+                        url : myurl,
+                        dataType : "json",
+                        success : function(info) {
+                                console.log(info);
+                                toPrint = "The number of items found " + info['items'].length;
+                                toPrint += "<ol>";
+                                $.each(info['items'], function(i){
+                                        toPrint += "<li><strong>" + info['items'][i]['name'] + "</strong>";
+					toPrint += "<br><img src=" + info['items'][i]['largeImage'] + " width=200 >";  
+					toPrint += "<strong>PRICE: " + info['items'][i]['salePrice'] + "</strong>";
+                                });
+                                toPrint += "</ol>";
+                                $("#result").html(toPrint);                     
+                        }
+			
+		});
+	});
+
+});
+
+</script>
+</head>
+
+<body>
+<div class="container" style="background-color:lavender;">
+<div class="col-sm-6">
+
+<h1> Walmart Toys </h1>
+<form>
+Enter a Category to Search: <input type="text" id="category" value=""><br>
+<input id="button" type="submit" value="Submit">
+</form>
+<div id="result">
+</div>
+</div>
+</div>
+</body>
+</head>
+</html>
+
